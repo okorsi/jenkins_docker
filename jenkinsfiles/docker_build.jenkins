@@ -13,6 +13,13 @@ pipeline {
       timestamps()
     }
     stages {
+      stage("Set description") {
+          steps {
+                script {
+                        currentBuild.displayName = "Do ${env.JOB_NAME} in Jenkins pipeline [#${BUILD_NUMBER}]"
+              }
+          }
+      }
       stage ("docker login") {
           steps {
             echo "=================== docker login ==========================="
@@ -21,10 +28,6 @@ pipeline {
           }
       stage("create docker image") {
           steps {
-            script {
-                    currentBuild.displayName = "Do ${env.JOB_NAME} in Jenkins pipeline [#${BUILD_NUMBER}]"
-                  }
-
             echo "==================== start build image ====================="
             dir ('docker/toolbox') {
                     sh 'docker build -t okorsi/jenkins_docker:latest . '
