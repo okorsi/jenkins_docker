@@ -10,16 +10,36 @@ pipeline {
       timestamps()
     }
     stages {
+      stage ("docker login") {
+          steps {
+            echo "=================== docker login ==========================="
+            withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                sh """
+                docker login -u $USERNAME -p $PASSWORD
+                """
+              }
+          }
+      }
       stage("create docker image") {
           steps {
             script {
                     currentBuild.displayName = "Do ${env.JOB_NAME} in Jenkins pipeline [#${BUILD_NUMBER}]"
                   }
+                }
+          steps {
             echo "==================== start build image ====================="
             dir ('docker/toolbox') {
                     sh 'docker build -t okorsi/jenkins_docker:latest . '
             }
-          }
+         }
+      }
+      stage("docker push") {
+        steps {
+          echo "====================== start pushing image ==================="
+          sh '''
+          docker push okorsi/jenkins_docker:latest
+          '''
         }
-    }
+      }
+   }
 }
