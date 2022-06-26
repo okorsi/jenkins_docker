@@ -17,7 +17,7 @@ pipeline {
                   }
             echo "==================== start build image ====================="
             dir ('docker/toolbox') {
-                    sh 'docker build -t toolbox:latest . '
+                    sh 'docker build -t okorsi/jenkins_docker:latest . '
             }
           }
         }
