@@ -12,6 +12,9 @@ pipeline {
     stages {
       stage("create docker image") {
           steps {
+            script {
+                    currentBuild.displayName = "Do ${env.JOB_NAME} in Jenkins pipeline [#${BUILD_NUMBER}]"
+                  }
             echo "==================== start build image ====================="
             dir ('docker/toolbox') {
                     sh 'docker build -t toolbox:latest . '
