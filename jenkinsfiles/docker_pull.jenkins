@@ -1,0 +1,51 @@
+#!groovy
+// Run docker build
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent any
+    environment {
+      DOCKERHUB_CREDENTIALS=credentials('docker-hub')
+    }
+    triggers { pollSCM('* * * * *') }
+    options {
+      buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+      timestamps()
+    }
+    stages {
+      stage("Set description") {
+          steps {
+                script {
+                        currentBuild.displayName = "Do ${env.JOB_NAME} in Jenkins pipeline [#${BUILD_NUMBER}]"
+              }
+          }
+      }
+      stage ("docker login") {
+          steps {
+            echo "=================== docker login ==========================="
+				     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+              }
+          }
+      stage("pull docker image") {
+          steps {
+            echo "==================== start pulling image ====================="
+                    image = docker.image('okorsi/jenkins_docker:latest')
+                    image.pull()
+
+         }
+      }
+      stage("docker push") {
+        steps {
+          echo "====================== start pushing image ==================="
+          sh '''
+          docker push okorsi/jenkins_docker:latest
+          '''
+        }
+      }
+    }
+    post {
+        always {
+            cleanWs()
+      }
+   }
+}
