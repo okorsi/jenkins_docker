@@ -26,19 +26,12 @@ pipeline {
 				     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
               }
           }
-      stage("pull docker image") {
-          steps {
-            echo "==================== start pulling image ====================="
-                    image = docker.image('okorsi/jenkins_docker:latest')
-                    image.pull()
 
-         }
-      }
-      stage("docker push") {
+      stage("docker pull") {
         steps {
-          echo "====================== start pushing image ==================="
+          echo "====================== start pulling image ==================="
           sh '''
-          docker push okorsi/jenkins_docker:latest
+          docker pull okorsi/jenkins_docker:latest
           '''
         }
       }
