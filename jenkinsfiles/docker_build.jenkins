@@ -30,7 +30,7 @@ pipeline {
           steps {
             echo "==================== start build image ====================="
             dir ('docker/toolbox') {
-                    sh 'docker build -t okorsi/jenkins_docker:latest . '
+                    sh 'docker build -t okorsi/docker_build:latest . '
             }
          }
       }
@@ -38,7 +38,7 @@ pipeline {
         steps {
           echo "====================== start pushing image ==================="
           sh '''
-          docker push okorsi/jenkins_docker:latest
+          docker push okorsi/docker_build:latest
           '''
         }
       }
