@@ -31,7 +31,7 @@ pipeline {
         steps {
           echo "====================== start pulling image ==================="
           sh '''
-          docker pull okorsi/jenkins_docker:latest
+          docker pull okorsi/docker_build:latest
           '''
         }
       }
