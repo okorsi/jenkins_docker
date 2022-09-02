@@ -1,9 +1,9 @@
-# simple CI/CD building a docker image and uploading it to the Docker hub
+# Simple CI/CD building a docker image and uploading it to the Docker hub
 
 architecture
 <img width="1663" alt="Screenshot 2022-09-01 at 21 17 41" src="https://user-images.githubusercontent.com/106388100/188001972-c473570a-9c2d-4334-a01d-0739eb2ab7e7.png">
 
-we build a docker image from the dockerfile located in github. And we upload the resulting image to Docker Hub\
+We build a docker image from the Dockerfile located in Github. And we upload the resulting image to Docker Hub\
 docker_build.jenkins
 
 ```groovy
@@ -144,3 +144,5 @@ Dockerfile
 FROM alpine
 RUN apk add --no-cache curl wget busybox-extras netcat-openbsd python3 py-pip && pip install awscli && apk --purge -v del py-pip
 CMD tail -f /dev/null
+```
+
